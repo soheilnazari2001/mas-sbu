@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>جلسه ۷ · معماری BDI، راهبردهای تعهد، کنترل متاسطح و معماری‌های ترکیبی لایه‌ای — سیستم‌های چندعامله</title>
+<meta name="description" content="معماری BDI با تفکیک تعمق به تولید گزینه و فیلترینگ، تحلیل هزینهٔ Δt و شرط بهینگی، سه راهبرد تعهد کورکورانه/تک‌منظوره/باز، کنترل متاسطح با تابع reconsider و عامل‌های شجاع و محتاط، و معماری‌های ترکیبی افقی TouringMachines و عمودی InterRAP.">
+<meta name="theme-color" content="#0b0f17">
+<script>(function(){try{var t=localStorage.getItem("nlp-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<link rel="icon" href="../assets/img/mas-logo-favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="stylesheet" href="../assets/css/mas-theme.css">
+</head>
+<body>
+<a class="skip-link" href="#main">پرش به محتوای اصلی</a>
+<div class="read-progress" data-read-progress aria-hidden="true"><span></span></div>
+
+<header class="session-topbar">
+  <div class="container inner">
+    <a class="brand-logo brand-logo--sm" href="../index.html" aria-label="صفحه اصلی"><img src="../assets/img/mas-logo.svg" alt=""></a>
+    <a class="back" href="../notes.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg><span>یادداشت‌ها</span></a>
+    <div class="bar-title"><span class="mono">S۰۷</span>معماری BDI، راهبردهای تعهد و معماری‌های ترکیبی لایه‌ای</div>
+    <nav class="topbar-nav" aria-label="ناوبری اصلی">
+      <a href="../index.html">خانه</a>
+      <a href="../notes.html" aria-current="page">یادداشت جلسات</a>
+      <a href="../index.html#grading">ارزشیابی و پروژه</a>
+    </nav>
+    <div class="actions">
+      <button class="icon-btn" type="button" data-print aria-label="چاپ صفحه" title="چاپ صفحه"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><path d="M6 18H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg></button>
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="تغییر پوسته" title="تغییر پوسته"><svg data-icon-moon viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z"/></svg><svg data-icon-sun viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="container">
+  <div class="session-layout">
+    <article class="session-main">
+      <header class="session-hero">
+        <nav class="breadcrumb" aria-label="مسیر">
+          <a href="../index.html">خانه</a><span class="sep">/</span>
+          <a href="../notes.html">یادداشت جلسات</a><span class="sep">/</span>
+          <span>جلسه ۷</span>
+        </nav>
+        <div class="session-kicker">
+          <span class="badge badge--live">جلسه ۰۷</span>
+          <span class="tag tag--brand">سیستم‌های چندعامله</span>
+        </div>
+        <h1>معماری BDI، راهبردهای تعهد، کنترل متاسطح و معماری‌های ترکیبی لایه‌ای</h1>
+        <div class="h1-en" dir="ltr">BDI Architecture, Commitment Strategies, Meta-Level Control &amp; Hybrid Layered Architectures</div>
+
+        <figure class="diagram" role="img" aria-label="حلقهٔ عاملی BDI از ادراک تا اجرا به همراه کنترل متاسطح و حلقهٔ بازگشتی">
+          <svg viewBox="0 0 760 230" style="font-family:'JetBrains Mono',ui-monospace,monospace" aria-hidden="true">
+            <defs>
+              <marker id="arr07" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0 0L10 5L0 10z" fill="var(--ink-2)"/>
+              </marker>
+              <marker id="arr07b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0 0L10 5L0 10z" fill="var(--brand-2)"/>
+              </marker>
+            </defs>
+
+            <!-- ===== BDI loop chain ===== -->
+            <rect x="14" y="100" width="100" height="54" rx="9" fill="var(--surface-3)" stroke="var(--line-2)" stroke-width="1.6"/>
+            <text x="64" y="123" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)" style="direction:ltr;unicode-bidi:isolate">observe()</text>
+            <text x="64" y="142" text-anchor="middle" font-size="10.5" fill="var(--ink-2)">ادراک محیط</text>
+
+            <rect x="128" y="100" width="100" height="54" rx="9" fill="var(--surface-3)" stroke="var(--line-2)" stroke-width="1.6"/>
+            <text x="178" y="123" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)" style="direction:ltr;unicode-bidi:isolate">brf(B, p)</text>
+            <text x="178" y="142" text-anchor="middle" font-size="10.5" fill="var(--ink-2)">بازنگری باورها</text>
+
+            <rect x="242" y="100" width="118" height="54" rx="9" fill="var(--surface-3)" stroke="var(--brand)" stroke-width="1.8"/>
+            <text x="301" y="123" text-anchor="middle" font-size="12" font-weight="700" fill="var(--brand)" style="direction:ltr;unicode-bidi:isolate">options→filter</text>
+            <text x="301" y="142" text-anchor="middle" font-size="10.5" fill="var(--ink-2)">تعمق · انتخاب نیّت</text>
+
+            <rect x="374" y="100" width="100" height="54" rx="9" fill="var(--surface-3)" stroke="var(--line-2)" stroke-width="1.6"/>
+            <text x="424" y="123" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)" style="direction:ltr;unicode-bidi:isolate">Intention I</text>
+            <text x="424" y="142" text-anchor="middle" font-size="10.5" fill="var(--ink-2)">نیّت / هدف</text>
+
+            <rect x="488" y="100" width="100" height="54" rx="9" fill="var(--surface-3)" stroke="var(--line-2)" stroke-width="1.6"/>
+            <text x="538" y="123" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)" style="direction:ltr;unicode-bidi:isolate">plan(B, I)</text>
+            <text x="538" y="142" text-anchor="middle" font-size="10.5" fill="var(--ink-2)">تولید برنامه P</text>
+
+            <rect x="602" y="100" width="104" height="54" rx="9" fill="var(--surface-3)" stroke="var(--warn)" stroke-width="1.8"/>
+            <text x="654" y="123" text-anchor="middle" font-size="12" font-weight="700" fill="var(--warn)" style="direction:ltr;unicode-bidi:isolate">execute(α)</text>
+            <text x="654" y="142" text-anchor="middle" font-size="10.5" fill="var(--ink-2)">اجرای اکشن</text>
+
+            <line x1="114" y1="127" x2="126" y2="127" stroke="var(--ink-2)" stroke-width="1.8" marker-end="url(#arr07)"/>
+            <line x1="228" y1="127" x2="240" y2="127" stroke="var(--ink-2)" stroke-width="1.8" marker-end="url(#arr07)"/>
+            <line x1="360" y1="127" x2="372" y2="127" stroke="var(--ink-2)" stroke-width="1.8" marker-end="url(#arr07)"/>
+            <line x1="474" y1="127" x2="486" y2="127" stroke="var(--ink-2)" stroke-width="1.8" marker-end="url(#arr07)"/>
+            <line x1="588" y1="127" x2="600" y2="127" stroke="var(--ink-2)" stroke-width="1.8" marker-end="url(#arr07)"/>
+
+            <!-- ===== meta-level control above deliberation ===== -->
+            <rect x="242" y="46" width="118" height="32" rx="8" fill="none" stroke="var(--warn)" stroke-width="1.6" stroke-dasharray="5 4"/>
+            <text x="301" y="66" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--warn)" style="direction:ltr;unicode-bidi:isolate">reconsider(B,I)?</text>
+            <line x1="301" y1="78" x2="301" y2="98" stroke="var(--warn)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr07b)"/>
+            <text x="380" y="66" text-anchor="start" font-size="10.5" fill="var(--ink-2)">کنترل متاسطح</text>
+
+            <!-- ===== agent loop back ===== -->
+            <path d="M654 154 V196 H64 V154" fill="none" stroke="var(--brand-2)" stroke-width="1.8" stroke-dasharray="6 5" marker-end="url(#arr07b)"/>
+            <text x="370" y="190" text-anchor="middle" font-size="11" font-weight="600" fill="var(--brand-2)">حلقهٔ عاملی · Δt = T_deliberate + T_ME</text>
+
+            <text x="380" y="222" text-anchor="middle" font-size="11" fill="var(--ink-2)">نیّت تا تحقق هدف یا اثبات غیرممکن بودن آن حفظ می‌شود — بازنگری فقط با رأی reconsider</text>
+          </svg>
+          <figcaption style="font-size:.78rem;color:var(--muted);margin-top:10px">حلقهٔ BDI با تفکیک تعمق به تولید گزینه و فیلترینگ؛ کنترل متاسطح با تابع <span class="mono" dir="ltr">reconsider</span> بر فراز مرحلهٔ تعمق، و حلقهٔ بازگشتی عامل با هزینهٔ زمانی <span class="mono" dir="ltr">Δt</span></figcaption>
+        </figure>
+
+        <div class="session-summary"><strong>خلاصه: </strong>معماری BDI با تفکیک تعمق به تولید گزینه و فیلترینگ، تحلیل هزینهٔ <span class="mono" dir="ltr">Δt</span> و شرط بهینگی، سه راهبرد تعهد <span class="mono" dir="ltr">Blind / Single-minded / Open-minded</span>، کنترل متاسطح با تابع <span class="mono" dir="ltr">reconsider</span> و عامل‌های شجاع و محتاط، و معماری‌های ترکیبی افقی <span class="mono" dir="ltr">TouringMachines</span> و عمودی <span class="mono" dir="ltr">InterRAP</span>.</div>
+        <div class="session-meta">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>دکتر منیره عبدوس</span></span>
+          <span class="mono" dir="ltr">Dr. Monireh Abdoos</span>
+        </div>
+      </header>
+
+      <details class="toc-mobile"><summary>فهرست مطالب</summary><ol><li><a href="#۱-استدلال-عملی-و-معماری-bdi">۱. استدلال عملی و معماری BDI</a></li>
+<li class="toc-sub"><a href="#۱-۱-الگوریتم-پایه-و-نسخه-تکامل-یافته">۱.۱. الگوریتم پایه و نسخهٔ تکامل‌یافته</a></li>
+<li class="toc-sub"><a href="#۱-۲-هزینه-محاسباتی-و-تاخیر-زمانی">۱.۲. هزینهٔ محاسباتی و تأخیر زمانی</a></li>
+<li><a href="#۲-راهبردهای-تعهد-عاملی">۲. راهبردهای تعهد عاملی</a></li>
+<li><a href="#۳-کنترل-متاسطح-و-تابع-بازنگری">۳. کنترل متاسطح و تابع بازنگری</a></li>
+<li class="toc-sub"><a href="#۳-۱-تحلیل-بهینگی-تابع-بازنگری">۳.۱. تحلیل بهینگی تابع بازنگری</a></li>
+<li class="toc-sub"><a href="#۳-۲-عامل-شجاع-در-برابر-عامل-محتاط">۳.۲. عامل شجاع در برابر عامل محتاط</a></li>
+<li><a href="#۴-معماری-های-لایه-ای-ترکیبی">۴. معماری‌های لایه‌ای ترکیبی</a></li>
+<li class="toc-sub"><a href="#۴-۱-معماری-لایه-ای-افقی">۴.۱. معماری لایه‌ای افقی</a></li>
+<li class="toc-sub"><a href="#۴-۲-معماری-لایه-ای-عمودی">۴.۲. معماری لایه‌ای عمودی</a></li>
+<li class="toc-sub"><a href="#۴-۳-مقایسه-تحمل-پذیری-خطا">۴.۳. مقایسهٔ تحمل‌پذیری خطا</a></li>
+<li><a href="#۵-پرسش-و-پاسخ-های-کلاس-درس">۵. پرسش و پاسخ‌های کلاس درس</a></li>
+<li><a href="#۶-واژه-نامه-تخصصی">۶. واژه‌نامه تخصصی</a></li></ol></details>
+
+      <div class="prose">
+<p dir="rtl" lang="fa">این سند شامل جزوهٔ ساختاریافتهٔ جلسه هفتم درس سیستم‌های چندعامله (<span dir="ltr">Multi-Agent Systems</span>) است. در این جلسه، معماری BDI به عنوان پیاده‌سازی خودکار استدلال عملی تشریح شده، هزینهٔ محاسباتی تصمیم‌گیری (<span class="mono" dir="ltr">Δt</span>) و شرط بهینگی آن تحلیل می‌گردد، سه راهبرد تعهد عاملی مقایسه می‌شوند، کنترل متاسطح با تابع بازنگری معرفی می‌شود و در نهایت معماری‌های ترکیبی لایه‌ای افقی و عمودی همراه با پرسش‌وپاسخ‌های واقعی کلاس ارائه می‌گردد.</p>
+
+<h2 id="۱-استدلال-عملی-و-معماری-bdi" dir="rtl" lang="fa">۱. استدلال عملی و معماری BDI<span class="h-en" dir="ltr">Practical Reasoning &amp; BDI Architecture</span></h2>
+<p dir="rtl" lang="fa">استدلال عملی (<span dir="ltr">Practical Reasoning</span>) در عامل‌های هوشمند به دو مرحلهٔ کلیدی تفکیک می‌شود:</p>
+<ol dir="auto">
+<li dir="rtl" lang="fa"><strong>تعمق (<span dir="ltr">Deliberation</span>):</strong> تصمیم‌گیری دربارهٔ اینکه هدف (<span dir="ltr">Goal</span>) و نیّت (<span dir="ltr">Intention</span>) عامل چه باشد.</li>
+<li dir="rtl" lang="fa"><strong>استدلال ابزار-هدف (<span dir="ltr">Means-ends Reasoning / Planning</span>):</strong> تعیین نحوهٔ رسیدن به نیّت از طریق تولید برنامه (<span dir="ltr">Plan</span>) — زنجیره‌ای از اکشن‌ها از حالت اولیه (<span dir="ltr">Initial State</span>) به حالت هدف (<span dir="ltr">Goal State</span>).</li>
+</ol>
+<p dir="rtl" lang="fa">معماری BDI (<span dir="ltr">Belief-Desire-Intention</span>) پیاده‌سازی برنامه‌نویسی‌شدهٔ خودکار همین فرآیند است.</p>
+
+<h3 id="۱-۱-الگوریتم-پایه-و-نسخه-تکامل-یافته" dir="rtl" lang="fa">۱.۱. الگوریتم پایه و نسخهٔ تکامل‌یافته</h3>
+<p dir="rtl" lang="fa">در الگوریتم پایه، عامل در یک حلقهٔ مداوم عملیات ادراک، بازنگری باور، تعمق، برنامه‌ریزی و اجرا را انجام می‌دهد:</p>
+<pre dir="ltr" lang="en">while true do
+    percept := observe_environment()
+    B := update_beliefs(B, percept)
+    I := deliberate(B)               // انتخاب نیّت / هدف
+    P := means_ends_reasoning(B, I)  // تولید برنامه (دنبالهٔ اکشن‌ها)
+    execute(P)                       // اجرا تا رسیدن به نیّت
+end while</pre>
+<p dir="rtl" lang="fa">با توسعهٔ این شبه‌کد، فرایند تعمق به دو گام عملیاتی مجزا تقسیم می‌شود:</p>
+<ul dir="auto">
+<li dir="rtl" lang="fa"><strong>تولید گزینه‌ها (<span dir="ltr">Option Generation</span>):</strong> تولید تمام اهداف و آلترناتیوهای ممکن (<span dir="ltr">Desires / Options</span>) بر اساس باورهای جاری <span class="mono" dir="ltr">B</span>.</li>
+<li dir="rtl" lang="fa"><strong>فیلترینگ (<span dir="ltr">Filtering</span>):</strong> انتخاب نیّت نهایی <span class="mono" dir="ltr">I</span> از میان گزینه‌های تولیدشده.</li>
+</ul>
+<pre dir="ltr" lang="en">while true do
+    percept := observe_environment()
+    B := brf(B, percept)             // تابع بازنگری باور (Belief Revision)
+    Options := options(B, I)         // تولید گزینه‌های ممکن
+    I := filter(B, Options, I)       // فیلترینگ و انتخاب نیّت نهایی
+    P := plan(B, I)                  // برنامه‌ریزی برای نیّت
+    execute(P)
+end while</pre>
+
+<h3 id="۱-۲-هزینه-محاسباتی-و-تاخیر-زمانی" dir="rtl" lang="fa">۱.۲. هزینهٔ محاسباتی و تأخیر زمانی<span class="h-en" dir="ltr">Computational Cost &amp; Δt Delay</span></h3>
+<p dir="rtl" lang="fa">فرآیند تصمیم‌گیری آنی نیست و نیازمند صرف زمان محاسباتی است:</p>
+<ul dir="auto">
+<li dir="rtl" lang="fa"><strong>زمان تعمق (<span class="mono" dir="ltr">T_deliberate = Δt₁ = T₁ − T₀</span>):</strong> زمان ارزیابی گزینه‌ها و انتخاب <span class="mono" dir="ltr">I</span>.</li>
+<li dir="rtl" lang="fa"><strong>زمان برنامه‌ریزی (<span class="mono" dir="ltr">T_ME = Δt₂ = T₂ − T₁</span>):</strong> زمان تولید برنامه <span class="mono" dir="ltr">P</span>.</li>
+</ul>
+<div class="formula" dir="ltr" lang="en">Δt = Δt₁ + Δt₂</div>
+<p dir="rtl" lang="fa">مجموع این دو زمان شکاف میان مشاهدهٔ محیط و شروع اجرای اکشن را نشان می‌دهد:</p>
+<pre dir="ltr" lang="en">T₀ [مشاهدهٔ محیط] ──(T_deliberate: انتخاب نیّت)──► T₁ [انتخاب I] ──(T_ME: تولید برنامه)──► T₂ [شروع اجرای P]</pre>
+<div class="callout callout--important"><div class="callout-head"><span class="co-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg></span><span>شرط بهینگی رفتار</span><span class="co-label">Optimality Condition</span></div><div class="callout-body">
+<p dir="rtl" lang="fa">عامل زمانی رفتار بهینه (<span dir="ltr">Optimal Behavior</span>) دارد که فرض ایستایی نسبی محیط در طول زمان <span class="mono" dir="ltr">Δt</span> برقرار باشد. اگر محیط فوق‌العاده پویا (<span dir="ltr">Highly Dynamic</span>) باشد، گزینه‌ها یا نیّت انتخاب‌شده ممکن است تا زمان شروع اجرا، اعتبار (<span dir="ltr">Validity</span>) یا بهینگی خود را از دست بدهند.</p>
+</div></div>
+<p dir="rtl" lang="fa"><strong>مثال واقعی کلاس درس:</strong> در بازارهای اقتصادی یا بازار مسکن و طلا در ایران، فرآیند تصمیم‌گیری و معامله نیازمند زمان <span class="mono" dir="ltr">Δt</span> است؛ اگر نرخ نوسانات محیطی بسیار بالا باشد، تا زمانی که فرد تصمیم به خرید یا فروش می‌گیرد، قیمت‌ها تغییر کرده و نیّت اولیه دیگر بهینه نخواهد بود. در مقابل، در سیستم‌هایی مانند خودروهای خودران در ترافیک تهران، زمان <span class="mono" dir="ltr">Δt</span> باید بسیار کوچک باشد؛ زیرا یک تغییر آنی در مسیر خودروی مجاور می‌تواند تمام برنامه‌ریزی‌های قبلی را ابطال کند.</p>
+
+<h2 id="۲-راهبردهای-تعهد-عاملی" dir="rtl" lang="fa">۲. راهبردهای تعهد عاملی<span class="h-en" dir="ltr">Commitment Strategies</span></h2>
+<p dir="rtl" lang="fa">پس از انتخاب نیّت <span class="mono" dir="ltr">I</span> و برنامه‌ریزی برای آن، عامل باید مشخص کند تا چه میزان به اجرای آن نیّت متعهد بماند. بر اساس نحوهٔ بازنگری نیّت‌ها و برنامه‌ها، سه راهبرد تعهد اصلی تعریف می‌شود:</p>
+<div class="table-scroll"><table dir="rtl" lang="fa"><thead><tr><th dir="rtl" lang="fa">راهبرد تعهد (<span dir="ltr">Commitment Strategy</span>)</th><th dir="rtl" lang="fa">نحوهٔ عملکرد و شرایط خاتمه</th><th dir="rtl" lang="fa">مزایا</th><th dir="rtl" lang="fa">معایب و مخاطرات</th></tr></thead><tbody>
+<tr><td dir="rtl" lang="fa"><strong>تعهد کورکورانه</strong><br><span dir="ltr">Blind Commitment</span></td><td dir="rtl" lang="fa">عامل نیّت و برنامهٔ انتخاب‌شده را بدون هیچ‌گونه بازنگری یا بررسی مجدد شرایط اجرا می‌کند تا زمانی که به هدف برسد.</td><td dir="rtl" lang="fa">هزینهٔ محاسباتی صفر برای بازنگری در طول اجرا؛ سادگی پیاده‌سازی.</td><td dir="rtl" lang="fa">احتمال گیر افتادن در حلقهٔ بی‌نهایت در صورت دست‌نیافتنی شدن هدف (مانند افراد متعصب یا سیستم‌های صلب).</td></tr>
+<tr><td dir="rtl" lang="fa"><strong>تعهد تک‌منظوره</strong><br><span dir="ltr">Single-minded Commitment</span></td><td dir="rtl" lang="fa">اجرای برنامه تا زمان تحقق هدف یا اثبات غیرممکن شدن (<span dir="ltr">Impossible</span>) آن. در صورت شکست برنامه، بازبرنامه‌ریزی (<span dir="ltr">Replanning</span>) می‌کند اما نیّت ثابت می‌ماند.</td><td dir="rtl" lang="fa">جلوگیری از بازبرنامه‌ریزی بی‌مورد؛ پایداری در تعقیب هدف.</td><td dir="rtl" lang="fa">عدم انعطاف در صورت ظهور فرصت‌ها یا اهداف جذاب‌تر در محیط.</td></tr>
+<tr><td dir="rtl" lang="fa"><strong>تعهد باز / گشوده</strong><br><span dir="ltr">Open-minded Commitment</span></td><td dir="rtl" lang="fa">عامل در هر گام از اجرای اکشن‌ها، علاوه بر بازبرنامه‌ریزی، امکان بازنگری و تغییر خودِ نیّت‌ها (<span dir="ltr">Intention Revision</span>) را نیز بررسی می‌کند.</td><td dir="rtl" lang="fa">انعطاف‌پذیری حداکثری و انطباق کامل با پویایی‌های محیطی.</td><td dir="rtl" lang="fa">هزینهٔ محاسباتی بالای بازنگری مداوم؛ خطر واگرایی یا تغییر مداوم اهداف بدون به سرانجام رساندن آن‌ها.</td></tr>
+</tbody></table></div>
+
+<h2 id="۳-کنترل-متاسطح-و-تابع-بازنگری" dir="rtl" lang="fa">۳. کنترل متاسطح و تابع بازنگری<span class="h-en" dir="ltr">Meta-Level Control &amp; Reconsideration Function</span></h2>
+<p dir="rtl" lang="fa">برای رفع نقیصهٔ تعهد گشوده (هزینهٔ محاسباتی سنگین و خطر واگرایی)، از یک کنترل‌کنندهٔ متاسطح (<span dir="ltr">Meta-level Controller</span>) استفاده می‌شود. این کنترل‌کننده با بهره‌گیری از تابع بازنگری (<span class="mono" dir="ltr">reconsider</span>) مشخص می‌کند که آیا در گام جاری، باز ارزیابی اهداف و گزینه‌ها لازم است یا خیر:</p>
+<pre dir="ltr" lang="en">while true do
+    percept := observe_environment()
+    B := brf(B, percept)
+
+    // بررسی نیاز به بازنگری از طریق کنترل‌کنندهٔ متاسطح
+    if reconsider(B, I) then
+        Options := options(B, I)
+        I := filter(B, Options, I)
+    end if
+
+    if not sound(P, I, B) then
+        P := plan(B, I)   // بازبرنامه‌ریزی در صورت عدم صحت برنامهٔ جاری
+    end if
+
+    alpha := head(P)
+    P := tail(P)
+    execute(alpha)
+end while</pre>
+
+<h3 id="۳-۱-تحلیل-بهینگی-تابع-بازنگری" dir="rtl" lang="fa">۳.۱. تحلیل بهینگی تابع بازنگری</h3>
+<p dir="rtl" lang="fa">بهینگی عملکرد تابع بازنگری بر اساس دو متغیر سنجیده می‌شود: ۱) آیا خروجی <span class="mono" dir="ltr">reconsider</span> برابر <span class="mono" dir="ltr">true</span> است یا <span class="mono" dir="ltr">false</span>؟ ۲) آیا در واقعیت محیطی، نیّت عامل نیاز به تغییر دارد یا خیر؟</p>
+<div class="table-scroll"><table dir="rtl" lang="fa"><thead><tr><th dir="rtl" lang="fa">شرایط</th><th dir="rtl" lang="fa">نیّت نباید تغییر کند (<span dir="ltr">No Change Required</span>)</th><th dir="rtl" lang="fa">نیّت باید تغییر کند (<span dir="ltr">Change Required</span>)</th></tr></thead><tbody>
+<tr><td dir="ltr" lang="en"><span class="mono">reconsider = false</span></td><td dir="rtl" lang="fa"><strong>بهینه (<span dir="ltr">Optimal</span>)</strong> — صرفه‌جویی در زمان محاسباتی و ادامهٔ اجرای برنامه.</td><td dir="rtl" lang="fa"><strong>غیربهینه (<span dir="ltr">Sub-optimal</span>)</strong> — تصلب و لجاجت؛ عدم بازنگری به‌موقع در هنگام تغییر شرایط.</td></tr>
+<tr><td dir="ltr" lang="en"><span class="mono">reconsider = true</span></td><td dir="rtl" lang="fa"><strong>غیربهینه (<span dir="ltr">Sub-optimal</span>)</strong> — هدررفت محاسباتی؛ اتلاف زمان برای بررسی گزینه‌های بی‌تغییر.</td><td dir="rtl" lang="fa"><strong>بهینه (<span dir="ltr">Optimal</span>)</strong> — پاسخ‌دهی به‌موقع؛ بازنگری نیّت دقیقاً در زمان نیاز.</td></tr>
+</tbody></table></div>
+
+<h3 id="۳-۲-عامل-شجاع-در-برابر-عامل-محتاط" dir="rtl" lang="fa">۳.۲. عامل شجاع در برابر عامل محتاط</h3>
+<p dir="rtl" lang="fa">با تنظیم پارامترهای کنترل متاسطح بر اساس پویایی محیط، دو تیپ رفتاری عاملی شکل می‌گیرد:</p>
+<ul dir="auto">
+<li dir="rtl" lang="fa"><strong>عامل محتاط (<span dir="ltr">Cautious Agent</span>):</strong> نرخ بازنگری بالا (<span class="mono" dir="ltr">reconsider ≈ true</span>) — مناسب محیط‌های شدیداً پویا (<span dir="ltr">Dynamic Environments</span>) که تغییرات محیطی مداوم رخ می‌دهد.</li>
+<li dir="rtl" lang="fa"><strong>عامل شجاع / ریسک‌پذیر (<span dir="ltr">Bold Agent</span>):</strong> نرخ بازنگری نزدیک به صفر (<span class="mono" dir="ltr">reconsider ≈ false</span>) — مناسب محیط‌های ایستا (<span dir="ltr">Static Environments</span>) یا با پویایی پایین که تغییرات ناگهانی نادر است.</li>
+</ul>
+
+<h2 id="۴-معماری-های-لایه-ای-ترکیبی" dir="rtl" lang="fa">۴. معماری‌های لایه‌ای ترکیبی<span class="h-en" dir="ltr">Hybrid Layered Architectures</span></h2>
+<p dir="rtl" lang="fa">عامل‌های واکنشی (<span dir="ltr">Reactive</span>) دارای سرعت بالا و هزینهٔ محاسباتی کم هستند و عامل‌های تعمقی (<span dir="ltr">Deliberative</span>) دارای قدرت برنامه‌ریزی و پیش‌فعالی (<span dir="ltr">Proactiveness</span>) می‌باشند؛ معماری‌های ترکیبی لایه‌ای برای بهره‌گیری هم‌زمان از مزایای هر دو دیدگاه طراحی شده‌اند.</p>
+
+<h3 id="۴-۱-معماری-لایه-ای-افقی" dir="rtl" lang="fa">۴.۱. معماری لایه‌ای افقی<span class="h-en" dir="ltr">Horizontal Layering</span></h3>
+<p dir="rtl" lang="fa">در معماری افقی، تمامی لایه‌ها به صورت موازی در کنار یکدیگر قرار می‌گیرند. اطلاعات سنسوری ورودی (<span dir="ltr">Percept</span>) به صورت هم‌زمان به همهٔ لایه‌ها وارد شده و هر لایه به صورت مستقل اکشن پیشنهادی خود را تولید می‌کند:</p>
+<pre dir="ltr" lang="en">                      ┌───────────────────────────┐
+                      │    لایهٔ واکنشی (Reactive) │ ──────┐
+                      ├───────────────────────────┤       │
+سنسورها (Percepts) ──►│  لایهٔ برنامه‌ریزی (Planning)│ ──────┼──► ساب‌سیستم کنترل ──► اکشن خروجی
+                      ├───────────────────────────┤       │    (Control Subsystem)
+                      │   لایهٔ مدل‌سازی (Modeling) │ ──────┘
+                      └───────────────────────────┘</pre>
+<p dir="rtl" lang="fa"><strong>معماری TouringMachines (فرگوسن):</strong> نمونهٔ شاخص معماری افقی شامل ۳ لایهٔ موازی است:</p>
+<ol dir="auto">
+<li dir="rtl" lang="fa"><strong>لایهٔ واکنشی (<span dir="ltr">Reactive Layer</span>):</strong> پاسخ‌های سریع بر اساس قواعد سادهٔ شرط-کنش.</li>
+<li dir="rtl" lang="fa"><strong>لایهٔ برنامه‌ریزی (<span dir="ltr">Planning Layer</span>):</strong> برنامه‌ریزی پیش‌فعال برای دستیابی به اهداف کلان.</li>
+<li dir="rtl" lang="fa"><strong>لایهٔ مدل‌سازی (<span dir="ltr">Modeling Layer</span>):</strong> مدل‌سازی سایر موجودیت‌ها و عامل‌های محیطی و پیش‌بینی تعارضات (<span dir="ltr">Conflicts</span>).</li>
+</ol>
+<p dir="rtl" lang="fa">از آن‌جا که لایه‌ها به صورت موازی خروجی می‌دهند، امکان بروز تعارض (<span dir="ltr">Conflict</span>) وجود دارد (مثلاً لایهٔ واکنشی دستور ترمز و لایهٔ برنامه‌ریزی دستور ادامهٔ مسیر می‌دهد). برای حل تعارض، یک ساب‌سیستم کنترل مرکزی (<span dir="ltr">Central Control Subsystem</span>) الزامی است:</p>
+<ul dir="auto">
+<li dir="rtl" lang="fa"><strong>پیچیدگی محاسباتی کنترل‌کنندهٔ مرکزی:</strong> اگر <span class="mono" dir="ltr">N</span> لایه داشته باشیم و هر لایه <span class="mono" dir="ltr">M</span> اکشن ممکن پیشنهاد دهد، تعداد کل ترکیبات حالت‌هایی که کنترل‌کنندهٔ مرکزی باید برای تعیین اولویت بررسی کند از مرتبهٔ <span class="mono" dir="ltr">O(N^N)</span> یا <span class="mono" dir="ltr">O(M^N)</span> خواهد بود.</li>
+<li dir="rtl" lang="fa"><strong>مزایا:</strong> سادگی مفهومی و امکان افزودن رفتارهای جدید در قالب لایه‌های مستقل.</li>
+<li dir="rtl" lang="fa"><strong>معایب:</strong> ایجاد گلوگاه محاسباتی (<span dir="ltr">Bottleneck</span>) در کنترل‌کنندهٔ مرکزی؛ عدم تضمین رفتار یکپارچه بدون کنترل‌کنندهٔ جامع.</li>
+</ul>
+
+<h3 id="۴-۲-معماری-لایه-ای-عمودی" dir="rtl" lang="fa">۴.۲. معماری لایه‌ای عمودی<span class="h-en" dir="ltr">Vertical Layering</span></h3>
+<p dir="rtl" lang="fa">در معماری عمودی، لایه‌ها به صورت سلسله‌مراتبی روی یکدیگر قرار می‌گیرند. جریان اطلاعات می‌تواند به دو صورت پیاده‌سازی شود:</p>
+<ul dir="auto">
+<li dir="rtl" lang="fa"><strong>یک‌طرفه (<span dir="ltr">One-pass</span>):</strong> اطلاعات از لایهٔ پایینی دریافت شده و پس از طی لایه‌ها، اکشن نهایی از بالاترین لایه صادر می‌شود.</li>
+<li dir="rtl" lang="fa"><strong>دو‌طرفه (<span dir="ltr">Two-pass</span>):</strong> اطلاعات سنسوری از پایین به بالا حرکت کرده (افزایش سطح انتزاع) و دستورات کنترلی و اکشن‌ها از بالا به پایین صادر می‌شوند.</li>
+</ul>
+<pre dir="ltr" lang="en">[لایهٔ همکاری / دانش اجتماعی (Cooperation Layer)]   ▲ جریان اطلاعات (Bottom-up):
+                        │                           │  افزایش سطح انتزاع
+[لایهٔ برنامه‌ریزی (Plan Layer)]                     │  (از جزئیات سنسوری به استراتژی)
+                        │                           ▼ جریان کنترل (Top-down):
+[لایهٔ رفتار / اجرای واکنشی (Behavior Layer)]          دستورات اجرایی و استراتژیک</pre>
+<p dir="rtl" lang="fa"><strong>معماری InterRAP:</strong> نمونهٔ شاخص معماری عمودی دوطرفه با سه لایه — لایهٔ رفتار (<span dir="ltr">Behavior Layer</span>: مدیریت تعاملات مستقیم با محیط و پاسخ‌های واکنشی)، لایهٔ برنامه‌ریزی (<span dir="ltr">Plan Layer</span>: برنامه‌ریزی محلی بر اساس دانش عامل)، و لایهٔ همکاری (<span dir="ltr">Cooperation Layer</span>: مدیریت دانش اجتماعی و تعامل با سایر عامل‌ها).</p>
+<p dir="rtl" lang="fa"><strong>پیچیدگی تعاملات بین‌لایه‌ای:</strong> اگر <span class="mono" dir="ltr">N</span> لایه داشته باشیم و بین هر لایه <span class="mono" dir="ltr">M</span> مؤلفهٔ اطلاعاتی منتقل شود، تعداد کل تعاملات بین‌لایه‌ای برابر است با:</p>
+<div class="formula" dir="ltr" lang="en">Complexity = (N − 1) · M²</div>
+
+<h3 id="۴-۳-مقایسه-تحمل-پذیری-خطا" dir="rtl" lang="fa">۴.۳. مقایسهٔ تحمل‌پذیری خطا<span class="h-en" dir="ltr">Fault Tolerance Comparison</span></h3>
+<ul dir="auto">
+<li dir="rtl" lang="fa"><strong>معماری افقی:</strong> تحمل‌پذیری خطا بالا است. اگر یک لایه (مثلاً لایهٔ برنامه‌ریزی) دچار اختلال شود، لایهٔ واکنشی همچنان می‌تواند به کار خود ادامه دهد و مانع از فروپاشی کل عامل شود.</li>
+<li dir="rtl" lang="fa"><strong>معماری عمودی:</strong> تحمل‌پذیری خطا پایین‌تر است (شکنندگی بیشتر). از آن‌جا که لایه‌ها به یکدیگر وابسته هستند، خرابی در یک لایهٔ میانی جریان اطلاعات را قطع کرده و عملکرد کل سیستم را مختل می‌سازد.</li>
+</ul>
+
+<h2 id="۵-پرسش-و-پاسخ-های-کلاس-درس" dir="rtl" lang="fa">۵. پرسش و پاسخ‌های کلاس درس<span class="h-en" dir="ltr">Classroom Questions &amp; Answers</span></h2>
+<p dir="rtl" lang="fa">تمامی پرسش‌ها و پاسخ‌های این بخش منحصراً از فایل صوتی کلاس درس استخراج شده و دقیقاً منبعث از گفتگوهای واقعی دانشجویان و استاد در جلسه هفتم می‌باشد:</p>
+<div class="qa-list">
+<details class="qa"><summary><span><strong>پرسش ۱:</strong> آیا در معماری تعهد باز، اجرای مداوم گزینه‌سازی و فیلترینگ پس از هر اکشن باعث واگرایی عامل نمی‌شود؟</span></summary><div class="qa-a" dir="rtl" lang="fa"><p><strong>پاسخ استاد:</strong> دقیقاً همین‌طور است. در تعهد باز، اگر عامل بخواهد پس از اجرای هر یک اکشن تکین، مجدداً تمام گزینه‌ها را از ابتدا تولید (<span dir="ltr">Option Generation</span>) و فیلتر (<span dir="ltr">Filtering</span>) کند، هزینهٔ محاسباتی بسیار سنگینی به سیستم تحمیل می‌شود. علاوه بر این، ممکن است عامل دچار نوعی «وسواس محاسباتی» یا واگرایی شود؛ به طوری که پیش از به سرانجام رساندن یک هدف، مدام تغییر موضع داده و به سمت اهداف جدید بچرخد. به همین دلیل، در نسخه‌های عملیاتی BDI یک کنترل‌کنندهٔ متاسطح (<span dir="ltr">Meta-level Controller</span>) اضافه می‌کنیم تا با تابع <span class="mono" dir="ltr">reconsider</span> مشخص کند چه زمانی استاپ کرده و بازنگری انجام دهد و چه زمانی به اجرای برنامه ادامه دهد.</p></div></details>
+<details class="qa"><summary><span><strong>پرسش ۲:</strong> اگر در ترافیک سنگین گیر افتاده باشیم و عجله داشته باشیم که به پرواز فرودگاه برسیم، تغییر مسیرها برای رسیدن به هدف منطبق بر کدام راهبرد تعهد است؟</span></summary><div class="qa-a" dir="rtl" lang="fa"><p><strong>پاسخ استاد:</strong> این سناریو منطبق بر تعهد تک‌منظوره (<span dir="ltr">Single-minded Commitment</span>) است. در این حالت، نیّت عامل (<span dir="ltr">Intention</span>) که همان رسیدن به فرودگاه است کاملاً ثابت و بدون تغییر باقی می‌ماند. اما به دلیل تغییرات ترافیک محیط، عامل مدام دست به بازبرنامه‌ریزی (<span dir="ltr">Replanning</span>) می‌زند و مسیرهای جایگزین (پلن‌های جدید) را امتحان می‌کند تا بالاخره به آن هدف ثابت برسد. تنها زمانی نیّت تغییر می‌کند یا رها می‌شود که رسیدن به پرواز رسماً غیرممکن (<span dir="ltr">Impossible</span>) شود.</p></div></details>
+<details class="qa"><summary><span><strong>پرسش ۳:</strong> آیا کنترل‌کنندهٔ متاسطح یک تابع قانون‌محور و ثابت است یا خود می‌تواند یک عامل مجزا باشد؟</span></summary><div class="qa-a" dir="rtl" lang="fa"><p><strong>پاسخ استاد:</strong> این کنترل‌کننده می‌تواند بر حسب مسئله اشکال مختلفی داشته باشد. در ساده‌ترین حالت، یک تابع انتزاعی از شرایط و معیارهای محیطی است که ما آن را تعریف می‌کنیم. اما در دیدگاه سیستم‌های چندعامله، می‌توان این مسئولیت را به عنوان یک تسک به یک عامل مجزا (<span dir="ltr">Separate Agent</span>) سپرد که وظیفه‌اش نظارت بر شرایط و تصمیم‌گیری دربارهٔ زمان فعال‌سازی بازنگری برای عامل اصلی باشد.</p></div></details>
+<details class="qa"><summary><span><strong>پرسش ۴:</strong> در معماری افقی مانند TouringMachines، ساب‌سیستم کنترل مرکزی بر چه اساس و چگونه تعارض میان پیشنهادهای لایه‌های موازی را حل می‌کند؟</span></summary><div class="qa-a" dir="rtl" lang="fa"><p><strong>پاسخ استاد:</strong> ساب‌سیستم کنترل مرکزی بر اساس اولویت‌بندی‌ها و قواعد منطقی تعبیه‌شده عمل می‌کند. از آن‌جا که لایه‌ها به صورت مستقل و موازی خروجی می‌دهند (مثلاً لایهٔ واکنشی پیشنهاد ترمز سریع می‌دهد و لایهٔ برنامه‌ریزی پیشنهاد تغییر لاین برای رسیدن به مقصد)، ساب‌سیستم کنترل شرایط محیطی را می‌سنجد. در شرایط خطر یا موانع ناگهانی، اولویت مطلق به لایهٔ واکنشی داده می‌شود و در شرایط عادی، خروجی لایهٔ برنامه‌ریزی یا مدل‌سازی انتخاب می‌گردد. البته این کنترل‌کنندهٔ مرکزی باید تمامی حالات ممکن تعارض را پیش‌بینی کند که این موضوع گلوگاه اصلی این معماری است.</p></div></details>
+<details class="qa"><summary><span><strong>پرسش ۵:</strong> آیا امکان ترکیب معماری افقی و عمودی با یکدیگر وجود دارد و این کار چه حاصلی دارد؟</span></summary><div class="qa-a" dir="rtl" lang="fa"><p><strong>پاسخ استاد:</strong> بله، کاملاً ممکن است. ما می‌توانیم در بخشی از سیستم لایه‌های مستقل افقی داشته باشیم که در درون خود دارای ساختار سلسله‌مراتبی عمودی هستند (مثلاً در عامل‌های پیچیده‌ای مانند انسان). اما باید توجه داشت که هرچه معماری پیچیده‌تر و ترکیب‌ها بیشتر شود، پیاده‌سازی و هندل کردن تمام حالات ممکن تعاملات سخت‌تر شده و طراحی سیستم به یک گلوگاه تبدیل می‌شود. بنابراین ترکیب افقی و عمودی تنها زمانی توجیه‌پذیر است که ضرورت واقعی مسئله آن را ایجاب کند.</p></div></details>
+</div>
+
+<h2 id="۶-واژه-نامه-تخصصی" dir="rtl" lang="fa">۶. واژه‌نامه تخصصی جلسه هفتم<span class="h-en" dir="ltr">Session Glossary</span></h2>
+<div class="table-scroll"><table class="glossary-table" dir="rtl" lang="fa"><thead><tr><th dir="rtl" lang="fa">اصطلاح فارسی</th><th dir="ltr" lang="en">معادل دقیق انگلیسی</th><th dir="rtl" lang="fa">تعریف و کاربرد در درس</th></tr></thead><tbody>
+<tr><td dir="rtl" lang="fa">استدلال عملی</td><td dir="ltr" lang="en"><span class="mono">Practical Reasoning</span></td><td dir="rtl" lang="fa">فرآیند دو مرحله‌ای تصمیم‌گیری دربارهٔ اهداف (تعمق) و نحوهٔ دستیابی به آن‌ها (استدلال ابزار-هدف).</td></tr>
+<tr><td dir="rtl" lang="fa">تعمق</td><td dir="ltr" lang="en"><span class="mono">Deliberation</span></td><td dir="rtl" lang="fa">مرحلهٔ تعیین اهداف و انتخاب نیّت نهایی از میان گزینه‌های موجود.</td></tr>
+<tr><td dir="rtl" lang="fa">استدلال ابزار-هدف</td><td dir="ltr" lang="en"><span class="mono">Means-ends Reasoning</span></td><td dir="rtl" lang="fa">فرآیند تولید برنامه و برنامه‌ریزی برای رسیدن از حالت اولیه به حالت هدف.</td></tr>
+<tr><td dir="rtl" lang="fa">تولید گزینه</td><td dir="ltr" lang="en"><span class="mono">Option Generation</span></td><td dir="rtl" lang="fa">مرحلهٔ تولید تمام اهداف و آلترناتیوهای ممکن (Desires).</td></tr>
+<tr><td dir="rtl" lang="fa">فیلترینگ</td><td dir="ltr" lang="en"><span class="mono">Filtering</span></td><td dir="rtl" lang="fa">مرحلهٔ انتخاب نیّت حاکم (Intention) از بین گزینه‌های تولیدشده.</td></tr>
+<tr><td dir="rtl" lang="fa">تعهد کورکورانه</td><td dir="ltr" lang="en"><span class="mono">Blind Commitment</span></td><td dir="rtl" lang="fa">راهبرد تعهد بدون بازنگری تا زمان تحقق هدف.</td></tr>
+<tr><td dir="rtl" lang="fa">تعهد تک‌منظوره</td><td dir="ltr" lang="en"><span class="mono">Single-minded Commitment</span></td><td dir="rtl" lang="fa">راهبرد تعهد به هدف تا زمان تحقق یا اثبات غیرممکن بودن آن، همراه با امکان بازبرنامه‌ریزی.</td></tr>
+<tr><td dir="rtl" lang="fa">تعهد باز / گشوده</td><td dir="ltr" lang="en"><span class="mono">Open-minded Commitment</span></td><td dir="rtl" lang="fa">راهبرد تعهد همراه با بازنگری مداوم اهداف و برنامه‌ها در هر گام.</td></tr>
+<tr><td dir="rtl" lang="fa">کنترل متاسطح</td><td dir="ltr" lang="en"><span class="mono">Meta-level Control</span></td><td dir="rtl" lang="fa">مکانیزم نظارتی برای تعیین زمان بهینهٔ فعال‌سازی فرآیند بازنگری نیّت‌ها.</td></tr>
+<tr><td dir="rtl" lang="fa">عامل شجاع</td><td dir="ltr" lang="en"><span class="mono">Bold Agent</span></td><td dir="rtl" lang="fa">عاملی که بازنگری‌های کمی انجام داده و برنامه را تا انتها دنبال می‌کند (مناسب محیط‌های ایستا).</td></tr>
+<tr><td dir="rtl" lang="fa">عامل محتاط</td><td dir="ltr" lang="en"><span class="mono">Cautious Agent</span></td><td dir="rtl" lang="fa">عاملی که در هر گام بازنگری انجام می‌دهد تا از تطابق با محیط مطمئن شود (مناسب محیط‌های پویا).</td></tr>
+<tr><td dir="rtl" lang="fa">معماری لایه‌ای افقی</td><td dir="ltr" lang="en"><span class="mono">Horizontal Layering</span></td><td dir="rtl" lang="fa">ساختار لایه‌ای موازی که ورودی‌ها و خروجی‌ها به صورت مستقل در همهٔ لایه‌ها پردازش می‌شوند.</td></tr>
+<tr><td dir="rtl" lang="fa">معماری لایه‌ای عمودی</td><td dir="ltr" lang="en"><span class="mono">Vertical Layering</span></td><td dir="rtl" lang="fa">ساختار لایه‌ای سلسله‌مراتبی که اطلاعات به صورت یک‌طرفه یا دوطرفه بین لایه‌ها جریان دارد.</td></tr>
+<tr><td dir="rtl" lang="fa">ساب‌سیستم کنترل</td><td dir="ltr" lang="en"><span class="mono">Control Subsystem</span></td><td dir="rtl" lang="fa">ماژول مرکزی در معماری افقی جهت رفع تعارضات میان خروجی لایه‌های موازی.</td></tr>
+</tbody></table></div>
+      </div>
+
+      <div class="session-foot-note">
+        این صفحه یادداشت مطالعاتی دانشجویان بر اساس جلسهٔ کلاس درس سیستم‌های چندعامله (دکتر منیره عبدوس) است و جایگزین اعلام‌های رسمی استاد نیست.
+        <br>منبع: جزوهٔ اختصاصی جلسه ۷.
+      </div>
+
+      <nav class="session-nav" aria-label="ناوبری جلسات">
+        <a class="prev" href="session-06.html"><span class="sn-label">جلسهٔ قبل</span><span class="sn-title">جلسه ۰۶ — منطق زمانی، معماری استدلال عملی و فرمول‌بندی رسمی اکشن‌ها</span></a>
+      </nav>
+    </article>
+
+    <aside class="toc" data-toc aria-label="فهرست مطالب">
+      <div class="toc-title">در این صفحه</div>
+      <ol><li><a href="#۱-استدلال-عملی-و-معماری-bdi">۱. استدلال عملی و معماری BDI</a></li>
+<li class="toc-sub"><a href="#۱-۱-الگوریتم-پایه-و-نسخه-تکامل-یافته">۱.۱. الگوریتم پایه و نسخهٔ تکامل‌یافته</a></li>
+<li class="toc-sub"><a href="#۱-۲-هزینه-محاسباتی-و-تاخیر-زمانی">۱.۲. هزینهٔ محاسباتی و تأخیر زمانی</a></li>
+<li><a href="#۲-راهبردهای-تعهد-عاملی">۲. راهبردهای تعهد عاملی</a></li>
+<li><a href="#۳-کنترل-متاسطح-و-تابع-بازنگری">۳. کنترل متاسطح و تابع بازنگری</a></li>
+<li class="toc-sub"><a href="#۳-۱-تحلیل-بهینگی-تابع-بازنگری">۳.۱. تحلیل بهینگی تابع بازنگری</a></li>
+<li class="toc-sub"><a href="#۳-۲-عامل-شجاع-در-برابر-عامل-محتاط">۳.۲. عامل شجاع در برابر عامل محتاط</a></li>
+<li><a href="#۴-معماری-های-لایه-ای-ترکیبی">۴. معماری‌های لایه‌ای ترکیبی</a></li>
+<li class="toc-sub"><a href="#۴-۱-معماری-لایه-ای-افقی">۴.۱. معماری لایه‌ای افقی</a></li>
+<li class="toc-sub"><a href="#۴-۲-معماری-لایه-ای-عمودی">۴.۲. معماری لایه‌ای عمودی</a></li>
+<li class="toc-sub"><a href="#۴-۳-مقایسه-تحمل-پذیری-خطا">۴.۳. مقایسهٔ تحمل‌پذیری خطا</a></li>
+<li><a href="#۵-پرسش-و-پاسخ-های-کلاس-درس">۵. پرسش و پاسخ‌های کلاس درس</a></li>
+<li><a href="#۶-واژه-نامه-تخصصی">۶. واژه‌نامه تخصصی</a></li></ol>
+    </aside>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-brand" style="margin-bottom:14px">
+      <span class="brand-logo" aria-hidden="true"><img src="../assets/img/mas-logo.svg" alt=""></span>
+      <span><strong>سیستم‌های چندعامله</strong><span>MAS · Multi-Agent Systems</span></span>
+    </div>
+    <div class="footer-bottom" style="margin-top:0;border-top:0;padding-top:0">
+      <span>© <span data-year>2026</span> — سیستم‌های چندعامله · یادداشت‌های درسی دانشجویان</span>
+      <span class="mono">MAS · Multi-Agent Systems</span>
+    </div>
+  </div>
+</footer>
+<script src="../assets/js/mas-fun.js" defer></script>
+<script src="../assets/js/site.js" defer></script>
+</body>
+</html>
