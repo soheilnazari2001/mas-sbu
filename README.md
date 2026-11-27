@@ -6,14 +6,13 @@
 
 <p align="center">
   <b>یادداشت‌های تعاملی، جزوات تخصصی، بازی‌های نظریه بازی‌ها و شبیه‌سازهای رفتار عاملی</b><br>
-  درس سیستم‌های چندعامله — دانشکده مهندسی و علوم کامپیوتر دانشگاه شهید بهشتی
+  درس سیستم‌های چندعامله — با تدریس دکتر منیره عبدوس
 </p>
 
 <p align="center">
-  <a href="https://ehsanshahbazii.github.io/mas-sbu/"><img src="https://img.shields.io/badge/Live_Demo-Visit_Website-10b981?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live Demo"></a>
-  <a href="https://github.com/EhsanShahbazii/mas-sbu/stargazers"><img src="https://img.shields.io/github/stars/EhsanShahbazii/mas-sbu?style=for-the-badge&color=10b981&logo=star" alt="Stars"></a>
-  <a href="https://github.com/EhsanShahbazii/mas-sbu/network/members"><img src="https://img.shields.io/github/forks/EhsanShahbazii/mas-sbu?style=for-the-badge&color=34d399&logo=git" alt="Forks"></a>
-  <img src="https://img.shields.io/badge/University-Shahid_Beheshti_(SBU)-003366?style=for-the-badge&logo=googlescholar&logoColor=white" alt="SBU">
+  <a href="https://soheilnazari2001.github.io/mas-sbu/"><img src="https://img.shields.io/badge/Live_Demo-Visit_Website-10b981?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live Demo"></a>
+  <a href="https://github.com/soheilnazari2001/mas-sbu/stargazers"><img src="https://img.shields.io/github/stars/soheilnazari2001/mas-sbu?style=for-the-badge&color=10b981&logo=star" alt="Stars"></a>
+  <a href="https://github.com/soheilnazari2001/mas-sbu/network/members"><img src="https://img.shields.io/github/forks/soheilnazari2001/mas-sbu?style=for-the-badge&color=34d399&logo=git" alt="Forks"></a>
   <img src="https://img.shields.io/badge/Instructor-Dr._Monireh_Abdoos-10b981?style=for-the-badge" alt="Instructor">
   <img src="https://img.shields.io/badge/Theme-Obsidian_Dark_%26_Light-111827?style=for-the-badge" alt="Themes">
   <img src="https://img.shields.io/badge/Font-Estedad_Variable-3b82f6?style=for-the-badge" alt="Typography">
@@ -24,7 +23,7 @@
 
 ## 📖 معرفی
 
-یادداشت‌ها و منابع درس **سیستم‌های چندعامله (Multi-Agent Systems)** در دانشکده مهندسی و علوم کامپیوتر **دانشگاه شهید بهشتی** با تدریس **دکتر منیره عبدوس**. این مجموعه شامل مفاهیم عامل‌های خودمختار، تعاملات اجتماعی، نظریه بازی‌ها، مدل‌های ریاضی و معماری‌های تصمیم‌گیری به همراه شبیه‌سازهای تعاملی است.
+یادداشت‌ها و منابع درس **سیستم‌های چندعامله (Multi-Agent Systems)** با تدریس **دکتر منیره عبدوس**. این مجموعه شامل مفاهیم عامل‌های خودمختار، تعاملات اجتماعی، نظریه بازی‌ها، مدل‌های ریاضی و معماری‌های تصمیم‌گیری به همراه شبیه‌سازهای تعاملی است.
 
 ---
 
@@ -47,7 +46,7 @@
 
 ```bash
 # ۱. کلون کردن مخزن
-git clone https://github.com/EhsanShahbazii/mas-sbu.git
+git clone https://github.com/soheilnazari2001/mas-sbu.git
 cd mas-sbu
 
 # ۲. اجرای وب‌سرور سبک پایتون
@@ -107,7 +106,7 @@ mas-sbu/
 </table>
 
 ### 🎓 استاد درس
-- **دکتر منیره عبدوس** — عضو هیئت علمی دانشگاه شهید بهشتی و مدرس درس سیستم‌های چندعامله.
+- **دکتر منیره عبدوس** — مدرس درس سیستم‌های چندعامله.
 
 ---
 
