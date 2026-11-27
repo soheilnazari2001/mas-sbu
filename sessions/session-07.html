@@ -222,13 +222,46 @@ end while</pre>
 
 <h3 id="۴-۱-معماری-لایه-ای-افقی" dir="rtl" lang="fa">۴.۱. معماری لایه‌ای افقی<span class="h-en" dir="ltr">Horizontal Layering</span></h3>
 <p dir="rtl" lang="fa">در معماری افقی، تمامی لایه‌ها به صورت موازی در کنار یکدیگر قرار می‌گیرند. اطلاعات سنسوری ورودی (<span dir="ltr">Percept</span>) به صورت هم‌زمان به همهٔ لایه‌ها وارد شده و هر لایه به صورت مستقل اکشن پیشنهادی خود را تولید می‌کند:</p>
-<pre dir="ltr" lang="en">                      ┌───────────────────────────┐
-                      │    لایهٔ واکنشی (Reactive) │ ──────┐
-                      ├───────────────────────────┤       │
-سنسورها (Percepts) ──►│  لایهٔ برنامه‌ریزی (Planning)│ ──────┼──► ساب‌سیستم کنترل ──► اکشن خروجی
-                      ├───────────────────────────┤       │    (Control Subsystem)
-                      │   لایهٔ مدل‌سازی (Modeling) │ ──────┘
-                      └───────────────────────────┘</pre>
+<figure class="diagram" role="img" aria-label="معماری لایه‌ای افقی: سه لایهٔ موازی واکنشی، برنامه‌ریزی و مدل‌سازی با ساب‌سیستم کنترل مرکزی">
+  <svg viewBox="0 0 700 195" style="font-family:'JetBrains Mono',ui-monospace,monospace" aria-hidden="true">
+    <defs>
+      <marker id="arrH1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--ink-2)"/></marker>
+      <marker id="arrH2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--brand)"/></marker>
+    </defs>
+
+    <rect x="12" y="76" width="92" height="46" rx="9" fill="var(--surface-3)" stroke="var(--brand-2)" stroke-width="1.6"/>
+    <text x="58" y="97" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--brand-2)" style="direction:ltr;unicode-bidi:isolate">Percepts</text>
+    <text x="58" y="113" text-anchor="middle" font-size="10.5" fill="var(--ink-2)">سنسورها</text>
+    <line x1="104" y1="99" x2="118" y2="99" stroke="var(--ink-2)" stroke-width="1.8" marker-end="url(#arrH1)"/>
+
+    <rect x="130" y="26" width="268" height="40" rx="9" fill="var(--surface-3)" stroke="var(--line-2)" stroke-width="1.6"/>
+    <text x="144" y="44" font-size="12" font-weight="700" fill="var(--ink)">لایهٔ واکنشی</text>
+    <text x="144" y="58" font-size="9.5" fill="var(--ink-2)" style="direction:ltr;unicode-bidi:isolate">Reactive Layer</text>
+
+    <rect x="130" y="76" width="268" height="40" rx="9" fill="var(--surface-3)" stroke="var(--line-2)" stroke-width="1.6"/>
+    <text x="144" y="94" font-size="12" font-weight="700" fill="var(--ink)">لایهٔ برنامه‌ریزی</text>
+    <text x="144" y="108" font-size="9.5" fill="var(--ink-2)" style="direction:ltr;unicode-bidi:isolate">Planning Layer</text>
+
+    <rect x="130" y="126" width="268" height="40" rx="9" fill="var(--surface-3)" stroke="var(--line-2)" stroke-width="1.6"/>
+    <text x="144" y="144" font-size="12" font-weight="700" fill="var(--ink)">لایهٔ مدل‌سازی</text>
+    <text x="144" y="158" font-size="9.5" fill="var(--ink-2)" style="direction:ltr;unicode-bidi:isolate">Modeling Layer</text>
+
+    <line x1="398" y1="46" x2="430" y2="46" stroke="var(--ink-2)" stroke-width="1.8"/>
+    <line x1="398" y1="96" x2="430" y2="96" stroke="var(--ink-2)" stroke-width="1.8"/>
+    <line x1="398" y1="146" x2="430" y2="146" stroke="var(--ink-2)" stroke-width="1.8"/>
+    <line x1="432" y1="30" x2="432" y2="166" stroke="var(--ink-2)" stroke-width="1.8"/>
+
+    <rect x="446" y="62" width="140" height="68" rx="9" fill="var(--surface-3)" stroke="var(--brand)" stroke-width="1.8"/>
+    <text x="516" y="88" text-anchor="middle" font-size="12" font-weight="700" fill="var(--brand)">ساب‌سیستم کنترل</text>
+    <text x="516" y="106" text-anchor="middle" font-size="9.5" fill="var(--ink-2)" style="direction:ltr;unicode-bidi:isolate">Control Subsystem</text>
+    <text x="516" y="121" text-anchor="middle" font-size="9.5" fill="var(--ink-2)">رفع تعارض لایه‌ها</text>
+    <line x1="434" y1="96" x2="444" y2="96" stroke="var(--brand)" stroke-width="1.8" marker-end="url(#arrH2)"/>
+
+    <line x1="586" y1="96" x2="684" y2="96" stroke="var(--brand)" stroke-width="1.8" marker-end="url(#arrH2)"/>
+    <text x="635" y="86" text-anchor="middle" font-size="11" font-weight="600" fill="var(--brand)">اکشن خروجی</text>
+    <text x="635" y="118" text-anchor="middle" font-size="9" fill="var(--ink-2)" style="direction:ltr;unicode-bidi:isolate">Action</text>
+  </svg>
+</figure>
 <p dir="rtl" lang="fa"><strong>معماری TouringMachines (فرگوسن):</strong> نمونهٔ شاخص معماری افقی شامل ۳ لایهٔ موازی است:</p>
 <ol dir="auto">
 <li dir="rtl" lang="fa"><strong>لایهٔ واکنشی (<span dir="ltr">Reactive Layer</span>):</strong> پاسخ‌های سریع بر اساس قواعد سادهٔ شرط-کنش.</li>
@@ -248,11 +281,34 @@ end while</pre>
 <li dir="rtl" lang="fa"><strong>یک‌طرفه (<span dir="ltr">One-pass</span>):</strong> اطلاعات از لایهٔ پایینی دریافت شده و پس از طی لایه‌ها، اکشن نهایی از بالاترین لایه صادر می‌شود.</li>
 <li dir="rtl" lang="fa"><strong>دو‌طرفه (<span dir="ltr">Two-pass</span>):</strong> اطلاعات سنسوری از پایین به بالا حرکت کرده (افزایش سطح انتزاع) و دستورات کنترلی و اکشن‌ها از بالا به پایین صادر می‌شوند.</li>
 </ul>
-<pre dir="ltr" lang="en">[لایهٔ همکاری / دانش اجتماعی (Cooperation Layer)]   ▲ جریان اطلاعات (Bottom-up):
-                        │                           │  افزایش سطح انتزاع
-[لایهٔ برنامه‌ریزی (Plan Layer)]                     │  (از جزئیات سنسوری به استراتژی)
-                        │                           ▼ جریان کنترل (Top-down):
-[لایهٔ رفتار / اجرای واکنشی (Behavior Layer)]          دستورات اجرایی و استراتژیک</pre>
+<figure class="diagram" role="img" aria-label="معماری لایه‌ای عمودی دوطرفه: لایه‌های همکاری، برنامه‌ریزی و رفتار با جریان اطلاعات از پایین به بالا و جریان کنترل از بالا به پایین">
+  <svg viewBox="0 0 560 215" style="font-family:'JetBrains Mono',ui-monospace,monospace" aria-hidden="true">
+    <defs>
+      <marker id="arrV1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--brand-2)"/></marker>
+      <marker id="arrV2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--warn)"/></marker>
+    </defs>
+
+    <rect x="115" y="14" width="300" height="52" rx="9" fill="var(--surface-3)" stroke="var(--line-2)" stroke-width="1.6"/>
+    <text x="129" y="36" font-size="12" font-weight="700" fill="var(--ink)">لایهٔ همکاری / دانش اجتماعی</text>
+    <text x="129" y="53" font-size="9.5" fill="var(--ink-2)" style="direction:ltr;unicode-bidi:isolate">Cooperation Layer</text>
+
+    <rect x="115" y="81" width="300" height="52" rx="9" fill="var(--surface-3)" stroke="var(--line-2)" stroke-width="1.6"/>
+    <text x="129" y="103" font-size="12" font-weight="700" fill="var(--ink)">لایهٔ برنامه‌ریزی</text>
+    <text x="129" y="120" font-size="9.5" fill="var(--ink-2)" style="direction:ltr;unicode-bidi:isolate">Plan Layer</text>
+
+    <rect x="115" y="148" width="300" height="52" rx="9" fill="var(--surface-3)" stroke="var(--line-2)" stroke-width="1.6"/>
+    <text x="129" y="170" font-size="12" font-weight="700" fill="var(--ink)">لایهٔ رفتار / اجرای واکنشی</text>
+    <text x="129" y="187" font-size="9.5" fill="var(--ink-2)" style="direction:ltr;unicode-bidi:isolate">Behavior Layer</text>
+
+    <line x1="444" y1="146" x2="444" y2="18" stroke="var(--brand-2)" stroke-width="1.8" marker-end="url(#arrV1)"/>
+    <text x="452" y="72" font-size="10.5" font-weight="600" fill="var(--brand-2)">جریان اطلاعات</text>
+    <text x="452" y="88" font-size="9" fill="var(--ink-2)" style="direction:ltr;unicode-bidi:isolate">bottom-up ↑</text>
+
+    <line x1="80" y1="66" x2="80" y2="146" stroke="var(--warn)" stroke-width="1.8" marker-end="url(#arrV2)"/>
+    <text x="66" y="92" text-anchor="end" font-size="10.5" font-weight="600" fill="var(--warn)">جریان کنترل</text>
+    <text x="66" y="108" text-anchor="end" font-size="9" fill="var(--ink-2)" style="direction:ltr;unicode-bidi:isolate">top-down ↓</text>
+  </svg>
+</figure>
 <p dir="rtl" lang="fa"><strong>معماری InterRAP:</strong> نمونهٔ شاخص معماری عمودی دوطرفه با سه لایه — لایهٔ رفتار (<span dir="ltr">Behavior Layer</span>: مدیریت تعاملات مستقیم با محیط و پاسخ‌های واکنشی)، لایهٔ برنامه‌ریزی (<span dir="ltr">Plan Layer</span>: برنامه‌ریزی محلی بر اساس دانش عامل)، و لایهٔ همکاری (<span dir="ltr">Cooperation Layer</span>: مدیریت دانش اجتماعی و تعامل با سایر عامل‌ها).</p>
 <p dir="rtl" lang="fa"><strong>پیچیدگی تعاملات بین‌لایه‌ای:</strong> اگر <span class="mono" dir="ltr">N</span> لایه داشته باشیم و بین هر لایه <span class="mono" dir="ltr">M</span> مؤلفهٔ اطلاعاتی منتقل شود، تعداد کل تعاملات بین‌لایه‌ای برابر است با:</p>
 <div class="formula" dir="ltr" lang="en">Complexity = (N − 1) · M²</div>
